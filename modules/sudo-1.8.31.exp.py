@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+#####################################
+# Installation module for Bloodhound
+#####################################
+
+# AUTHOR OF MODULE NAME
+AUTHOR=""
+
+# DESCRIPTION OF THE MODULE
+DESCRIPTION=""
+
+# INSTALL TYPE GIT, SVN, FILE DOWNLOAD
+# OPTIONS = GIT, SVN, FILE
+INSTALL_TYPE="GIT"
+
+# LOCATION OF THE FILE OR GIT/SVN REPOSITORY
+REPOSITORY_LOCATION="https://github.com/Crazyhead90/Sudo-1.8.31-Root-Exploit.git"
+
+# EXTENSION OF THE RELEASE FILE (WITHOUT ".")
+RELEASE_EXTENSION=""
+
+# FILTER TO GRAB THE CORRECT RELEASE FILE
+RELEASE_FILTER=""
+
+# WHERE DO YOU WANT TO INSTALL IT
+INSTALL_LOCATION="Sudo-1.8.31-Root-Exploit"
+
+# DEPENDS FOR DEBIAN INSTALLS
+DEBIAN=""
+
+# DEPENDS FOR FEDORA INSTALLS
+FEDORA=""
+
+# COMMANDS TO RUN AFTER
+AFTER_COMMANDS="cd {INSTALL_LOCATION}, mkdir -p ~/httpserver/privesc/sudo-1.8.31-exploit/, cp exploit.c,shellcode.c,Makefile ~/httpserver/privesc/sudo-1.8.31-exploit/"
+
+# THIS WILL CREATE AN AUTOMATIC LAUNCHER FOR THE TOOL
+LAUNCHER=""
+
+# RUN AFTER_COMMAND AFTER UPDATING
+BYPASS_UPDATE="YES"
