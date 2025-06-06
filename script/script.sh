@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo -u $USER install -y python3 python3-pip python3-venv seclists
+sudo -u $USER apt-get install -y python3 python3-pip python3-venv seclists
 
 mkdir -p $HOME/httpserver/enum
 mkdir -p $HOME/httpserver/privesc
