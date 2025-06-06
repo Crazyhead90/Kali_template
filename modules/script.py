@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-#####################################
-# Installation module for Bloodhound
-#####################################
+#############################################
+# Installation module for Sysinternals Suite
+#############################################
 
 # AUTHOR OF MODULE NAME
-AUTHOR=""
+AUTHOR="David Kennedy (HackingDave)"
 
 # DESCRIPTION OF THE MODULE
-DESCRIPTION=""
+DESCRIPTION="This module will install/update sysinternals - Bundle of Sysinternals Utilities"
 
 # INSTALL TYPE GIT, SVN, FILE DOWNLOAD
 # OPTIONS = GIT, SVN, FILE
 INSTALL_TYPE="FILE"
 
 # LOCATION OF THE FILE OR GIT/SVN REPOSITORY
-REPOSITORY_LOCATION="https://raw.githubusercontent.com/brightio/penelope/refs/heads/main/penelope.py"
+REPOSITORY_LOCATION=""
 
 # EXTENSION OF THE RELEASE FILE (WITHOUT ".")
 RELEASE_EXTENSION=""
@@ -23,16 +23,16 @@ RELEASE_EXTENSION=""
 RELEASE_FILTER=""
 
 # WHERE DO YOU WANT TO INSTALL IT
-INSTALL_LOCATION="penelope"
+INSTALL_LOCATION="scripts"
 
 # DEPENDS FOR DEBIAN INSTALLS
 DEBIAN=""
 
 # COMMANDS TO RUN AFTER
-AFTER_COMMANDS="cd {INSTALL_LOCATION},chmod +x penelope.py"
+AFTER_COMMANDS="cd $HOME/Kali_template/script/, sudo ./script.sh"
 
 # THIS WILL CREATE AN AUTOMATIC LAUNCHER FOR THE TOOL
-LAUNCHER="penelope"
+LAUNCHER=""
 
 # RUN AFTER_COMMAND AFTER UPDATING
 BYPASS_UPDATE="YES"

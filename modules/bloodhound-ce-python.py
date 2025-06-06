@@ -28,9 +28,6 @@ INSTALL_LOCATION="bloodhound-ce-python"
 # DEPENDS FOR DEBIAN INSTALLS
 DEBIAN=""
 
-# DEPENDS FOR FEDORA INSTALLS
-FEDORA=""
-
 # COMMANDS TO RUN AFTER
 AFTER_COMMANDS="cd {INSTALL_LOCATION},{VENV_py3} && pip install .,mv bloodhound.py bloodhound-ce-python.py,{PATH_VENV3}"
 

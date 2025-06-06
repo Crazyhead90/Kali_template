@@ -28,9 +28,6 @@ INSTALL_LOCATION="sysinternals"
 # DEPENDS FOR DEBIAN INSTALLS
 DEBIAN="curl unzip"
 
-# DEPENDS FOR FEDORA INSTALLS
-FEDORA=""
-
 # COMMANDS TO RUN AFTER
 AFTER_COMMANDS="cd {INSTALL_LOCATION},unzip -j -o *.zip, mkdir $HOME/httpserver/, mv ./* $HOME/httpserver/"
 

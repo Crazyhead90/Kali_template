@@ -28,9 +28,6 @@ INSTALL_LOCATION="Sudo-1.8.31-Root-Exploit"
 # DEPENDS FOR DEBIAN INSTALLS
 DEBIAN=""
 
-# DEPENDS FOR FEDORA INSTALLS
-FEDORA=""
-
 # COMMANDS TO RUN AFTER
 AFTER_COMMANDS="cd {INSTALL_LOCATION}, mkdir -p $HOME/httpserver/privesc/sudo-1.8.31-exploit/, cp exploit.c shellcode.c Makefile $HOME/httpserver/privesc/sudo-1.8.31-exploit/"
 

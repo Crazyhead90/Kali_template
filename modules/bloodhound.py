@@ -28,9 +28,6 @@ INSTALL_LOCATION="bloodhound"
 # DEPENDS FOR DEBIAN INSTALLS
 DEBIAN=""
 
-# DEPENDS FOR FEDORA INSTALLS
-FEDORA=""
-
 # COMMANDS TO RUN AFTER
 AFTER_COMMANDS="cd {INSTALL_LOCATION},chmod +x docker_installer.sh,./docker_installer.sh,chmod a+rx bloodhound_start.sh bloodhound_stop.sh bloodhound_delete_data.sh"
 

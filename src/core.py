@@ -5,11 +5,9 @@
 
 import os
 import subprocess
-import select
 import readline
 import glob
 import platform
-import urllib
 import sys
 
 # tab completion
@@ -27,24 +25,12 @@ readline.set_completer(complete)
 
 # color scheme for core
 class bcolors:
-	PURPLE = '\033[95m'
-	CYAN = '\033[96m'
-	DARKCYAN = '\033[36m'
 	BLUE = '\033[94m'
 	GREEN = '\033[92m'
 	YELLOW = '\033[93m'
 	RED = '\033[91m'
 	BOLD = '\033[1m'
-	UNDERL = '\033[4m'
 	ENDC = '\033[0m'
-	backBlack = '\033[40m'
-	backRed = '\033[41m'
-	backGreen = '\033[42m'
-	backYellow = '\033[43m'
-	backBlue = '\033[44m'
-	backMagenta = '\033[45m'
-	backCyan = '\033[46m'
-	backWhite = '\033[47m'
 
 # get the main SET path
 def definepath():
@@ -73,17 +59,6 @@ def print_error(message):
 def set_title(title):
 	sys.stdout.write("\x1b]2;%s\x07" % title)
 
-# count all of the modules
-def count_modules():
-	modules_path = definepath() + "/modules/"
-	counter = 0
-	for path, subdirs, files in os.walk(modules_path):
-		for name in files:
-			filename = os.path.join(path, name)
-			if not "__init__.py" in filename:
-				counter = counter + 1
-	return counter
-
 # version information
 version = "1.20.2 beta"
 
@@ -97,16 +72,13 @@ banner = """\n\n
 def check_config(param):
 	fileopen = open("%s/config/ptf.config" % (definepath()), "r")
 	for line in fileopen:
-		# if the line starts with the param we want then we are set, otherwise
-		# if it starts with a # then ignore
-		if line.startswith(param) != "#":
-			if line.startswith(param):
-				line = line.rstrip()
-				# remove any quotes or single quotes
-				line = line.replace('"', "")
-				line = line.replace("'", "")
-				line = line.split("=")
-				return line[1]
+		if line.startswith(param):
+			line = line.rstrip()
+			# remove any quotes or single quotes
+			line = line.replace('"', "")
+			line = line.replace("'", "")
+			line = line.split("=")
+			return line[1]
 
 # parser module for module and term
 def module_parser(filename, term):
@@ -133,18 +105,6 @@ def module_parser(filename, term):
 				counter = 1
 				return line
 
-		# if there was no search term identified for the module
-		if counter == 0:
-			filename_short = filename.replace(definepath() + "/", "")
-			filename_short = filename_short.replace(".py", "")
-			if term not in "BYPASS_UPDATE|LAUNCHER|TOOL_DEPEND|X64_LOCATION|RELEASE_EXTENSION|RELEASE_FILTER|install_update_all":
-							  if filename_short not in "__init__|msfdb.sh|modules/custom_list/list":
-										print_error("Warning, module %s was found but contains no %s field." % (filename_short, term))
-										print_error("Check the module again for errors and try again.")
-										print_error("Module has been removed from the list.")
-
-			return ""
-
 	# if the file isn't there
 	if not os.path.isfile(filename):
 		return None
@@ -163,77 +123,23 @@ def exit_ptf():
 # this is the main handler to check what distribution we are using
 # if it can't find it, will default to manual install base
 def profile_os():
-	# if we are running a debian variant
-	if os.path.isfile("/usr/bin/apt-get"):
+	# Check if we are running a Debian variant
+	if os.path.isfile("/usr/bin/apt-get") or os.path.isfile("/usr/bin/aptitude"):
 		return "DEBIAN"
-	if os.path.isfile("/usr/bin/aptitude"):
-		return "DEBIAN"
-	if os.path.isfile("/etc/arch-release"):
-		return "ARCHLINUX"
-	if os.path.isfile("/etc/fedora-release"):
-		return "FEDORA"
-	# else use custom
 	else:
-		return "CUSTOM"
-
-# standard log write out
-def logging(log):
-	# grab the log path
-	logpath = check_config("LOG_PATH=")
-	# if the file isn't there, create it
-	if not os.path.isfile(logpath):
-		filewrite = open(logpath, "w")
-		filewrite.write("")
-		filewrite.close()
-	# open for append
-	filewrite = open(logpath, "a")
-	# write it out
-	filewrite.write(log)
-	# close the file
-	filewrite.close()
-
-# this will install all the proper locations for
-def prep_install():
-	if not os.path.isfile(os.getenv("HOME") + "/.ptf"):
-		print_status("This appears to be your first time using PTF.")
-		print_status("Updating & Upgrading packages.")
-		os.system("sudo apt-get update -y && sudo apt-get upgrade -y")
-		print_status("Installing required python2 & 3 packages")
-		os.system("sudo apt-get install curl vim python2 python3 python3-pip python3-venv -y")
-		os.system("sudo curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && sudo python2 get-pip.py && "
-				  "sudo rm get-pip.py && pip3 install virtualenv && pip2 install virtualenv")
-
-		os.system('ln -s /root /home/root')
-		for i in os.listdir('/home'):
-			os.system(
-				f"echo 'alias python=/usr/bin/python3' >> /home/{i}/.bashrc && "
-				f"echo 'alias pip=/usr/bin/pip3' >> /home/{i}/.bashrc")
-
-		print_status("Creating output directory to: " + os.getenv("HOME") + "/.ptf")
-		os.makedirs(os.getenv("HOME") + "/.ptf")
-
-def home_directory():
-	return os.getenv("HOME") + "/.ptf"
+		print_error("PTF currently only supports Debian-based systems.")
+		print_error("Exiting...")
+		sys.exit(1)
 
 # this will run commands after install or update on a module
 def after_commands(filename, install_location):
 	from src.commands import after_commands
 	commands = module_parser(filename, "AFTER_COMMANDS")
 	if commands != "":
-		# here we check if a virtual environment is wanted
-		if "{VENV_py2}" in commands:
-			commands = commands.replace("{VENV_py2}","virtualenv --python=python2 {INSTALL_LOCATION}/venv,source {INSTALL_LOCATION}/venv/bin/activate && pip2 install wheel")
-		if "{VENV_py3}" in commands:
-			commands = commands.replace("{VENV_py3}","python3 -m venv {INSTALL_LOCATION}/venv,source {INSTALL_LOCATION}/venv/bin/activate && pip3 install wheel")
-		# creating shortcut to virtual environment path
-		if "{PATH_VENV2}" in commands:
-			commands = commands.replace("{PATH_VENV2}","grep -q -F '#!{INSTALL_LOCATION}/venv/bin/python2' *.py||sed -i '1i#!{INSTALL_LOCATION}/venv/bin/python2' *.py > /dev/null 2>&1 && chmod +x *.py")
-		if "{PATH_VENV3}" in commands:
-			commands = commands.replace("{PATH_VENV3}","grep -q -F '#!{INSTALL_LOCATION}/venv/bin/python3' *.py||sed -i '1i#!{INSTALL_LOCATION}/venv/bin/python3' *.py > /dev/null 2>&1 && chmod +x *.py")
-		# here we check if install location needs to be added
-		if "{INSTALL_LOCATION}" in commands:
-			commands = commands.replace("{INSTALL_LOCATION}", install_location)
-		# ptf location
+		commands = commands.replace("{VENV_py3}","python3 -m venv {INSTALL_LOCATION}/venv && source {INSTALL_LOCATION}/venv/bin/activate && pip3 install wheel") # Corrected comma to &&
+		commands = commands.replace("{PATH_VENV3}","find . -maxdepth 1 -name '*.py' -exec sed -i '1i#!{INSTALL_LOCATION}/venv/bin/python3' {} \\; -exec chmod +x {} \\;") # More robust sed and chmod
+		commands = commands.replace("{INSTALL_LOCATION}", install_location) # INSTALL_LOCATION replacement
+		# PTF_LOCATION replacement
 		if "{PTF_LOCATION}" in commands:
 			commands = commands.replace("{PTF_LOCATION}", os.getcwd())
 		print_status("Running post download commands for installation requirements..")
@@ -242,82 +148,59 @@ def after_commands(filename, install_location):
 
 # launcher - create launcher under /usr/local/bin
 def launcher(filename, install_location):
-	launcher = module_parser(filename, "LAUNCHER")
+	launcher_names_str = module_parser(filename, "LAUNCHER")
 
-	# if its optional
-	if launcher == None:
-		launcher = ""
-	if launcher != "":
-		# create a launcher if it doesn't exist
-		base_launcher = 0
-		if "," in launcher:
-			launcher = launcher.split(",")
-		for launchers in launcher:
+	if not launcher_names_str:  # Covers None or empty string
+		return
 
-			# means there was just one launcher
-			if len(launchers) == 1:
-				launchers = launcher
-				base_launcher = 1
+	if "," in launcher_names_str:
+		launcher_list = launcher_names_str.split(",")
+	else:
+		launcher_list = [launcher_names_str]
 
-			if os.path.isfile("/usr/local/bin/" + launchers):
-				os.remove("/usr/local/bin/" + launchers)
-			if not os.path.isfile("/usr/local/bin/" + launchers):
+	for launcher_name in launcher_list:
+		launcher_name = launcher_name.strip()
+		if not launcher_name:  # Skip empty names if "a,,b" or "a, "
+			continue
 
-				# base launcher filename
-				point = ""
+		if os.path.isfile("/usr/local/bin/" + launcher_name):
+			os.remove("/usr/local/bin/" + launcher_name)
+		if not os.path.isfile("/usr/local/bin/" + launcher_name):
 
-				# make sure the actual launcher is there with known filetypes
-				if os.path.isfile(install_location + "/" + launchers):
-					# specific launcher file
-					point = "./" + launchers
-					file_point = launchers
+			point = ""
+			file_point = ""
 
-				# check for Python
-				if os.path.isfile(install_location + "/" + launchers + ".py"):
-					point = "./" + launchers + ".py"
-					file_point = launchers + ".py"
+			# Check for known filetypes to determine the command and target file
+			if os.path.isfile(os.path.join(install_location, launcher_name)):
+				point = "./" + launcher_name
+				file_point = launcher_name
+			elif os.path.isfile(os.path.join(install_location, launcher_name + ".py")):
+				point = "./" + launcher_name + ".py"
+				file_point = launcher_name + ".py"
+			elif os.path.isfile(os.path.join(install_location, launcher_name + ".rb")):
+				point = "./" + launcher_name + ".rb"
+				file_point = launcher_name + ".rb"
+			elif os.path.isfile(os.path.join(install_location, launcher_name + ".pl")):
+				point = "./" + launcher_name + ".pl"
+				file_point = launcher_name + ".pl"
+			elif os.path.isfile(os.path.join(install_location, launcher_name + ".sh")):
+				point = "./" + launcher_name + ".sh"
+				file_point = launcher_name + ".sh"
+			elif os.path.isfile(os.path.join(install_location, launcher_name + ".exe")):
+				point = "wine " + launcher_name + ".exe"
+				file_point = launcher_name + ".exe"
+			elif os.path.isfile(os.path.join(install_location, launcher_name + ".jar")):
+				point = "java -jar " + launcher_name + ".jar"
+				file_point = launcher_name + ".jar"
 
-				# check for Ruby
-				if os.path.isfile(install_location + "/" + launchers + ".rb"):
-					point = "./" + launchers + ".rb"
-					file_point = launchers + ".rb"
-
-				# check for Perl
-				if os.path.isfile(install_location + "/" + launchers + ".pl"):
-					point = "./" + launchers + ".pl"
-					file_point = launchers + ".pl"
-
-				# check for bash
-				if os.path.isfile(install_location + "/" + launchers + ".sh"):
-					point = "./" + launchers + ".sh"
-					file_point = launchers + ".sh"
-
-				# check of win executable, then flag wine
-				if os.path.isfile(install_location + "/" + launchers + ".exe"):
-					point = "wine " + launchers + ".exe"
-					file_point = launchers + ".exe"
-
-				# check of jar executable, then flag java
-				if os.path.isfile(install_location + "/" + launchers + ".jar"):
-					point = "java -jar " + launchers + ".jar"
-					file_point = launchers + ".jar"
-
-				# normal launcher
-				if os.path.isfile(install_location + "/" + launchers):
-					point = "./" + launchers
-					file_point = launchers
-
-				# if we found filetype
-				if point != "":
-					filewrite = open("/usr/local/bin/" + launchers, "w")
-					filewrite.write('#!/bin/bash\ncd %s\n%s $@\n' % (install_location, point))
-					filewrite.close()
-					subprocess.Popen("chmod +x /usr/local/bin/%s %s/%s" % (launchers, install_location, file_point), shell=True, executable='/bin/bash').wait()
-					print_status("Created automatic launcher, you can run the tool from anywhere by typing: " + launchers)
-
-			# just need to do this once
-			if base_launcher == 1:
-				break
+			if point and file_point:  # Ensure a command and target file were determined
+				launcher_path = "/usr/local/bin/" + launcher_name
+				with open(launcher_path, "w") as filewrite:
+					filewrite.write('#!/bin/bash\ncd %s\n%s "$@"\n' % (install_location, point))
+				
+				target_file_full_path = os.path.join(install_location, file_point)
+				subprocess.Popen("chmod +x %s %s" % (launcher_path, target_file_full_path), shell=True, executable='/bin/bash').wait()
+				print_status("Created automatic launcher, you can run the tool from anywhere by typing: " + launcher_name)
 
 # search functionality here
 def search(term):

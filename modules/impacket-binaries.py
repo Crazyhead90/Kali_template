@@ -28,9 +28,6 @@ INSTALL_LOCATION="impacket-binaries"
 # DEPENDS FOR DEBIAN INSTALLS
 DEBIAN=""
 
-# DEPENDS FOR FEDORA INSTALLS
-FEDORA=""
-
 # COMMANDS TO RUN AFTER
 AFTER_COMMANDS="cd {INSTALL_LOCATION},mkdir -p $HOME/httpserver/impacket-binaries/,cp * $HOME/httpserver/impacket-binaries/"
 
