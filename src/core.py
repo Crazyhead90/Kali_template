@@ -164,7 +164,7 @@ def exit_ptf():
 # if it can't find it, will default to manual install base
 def profile_os():
 	# if we are running a debian variant
-	if os.path.isfile("/usr/bin/apt-get"):
+	if os.path.isfile("/usr/bin/sudo -u $USER"):
 		return "DEBIAN"
 	if os.path.isfile("/usr/bin/aptitude"):
 		return "DEBIAN"
@@ -197,9 +197,9 @@ def prep_install():
 	if not os.path.isfile(os.getenv("HOME") + "/.ptf"):
 		print_status("This appears to be your first time using PTF.")
 		print_status("Updating & Upgrading packages.")
-		os.system("apt-get update -y &&  apt-get upgrade -y")
+		os.system("sudo -u $USER update -y &&  sudo -u $USER upgrade -y")
 		print_status("Installing required python2 & 3 packages")
-		os.system("apt-get install curl vim python2 python3 python3-pip python3-venv -y")
+		os.system("sudo -u $USER install curl vim python2 python3 python3-pip python3-venv -y")
 		os.system("curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && python2 get-pip.py && "
 				  "rm get-pip.py && pip3 install virtualenv && pip2 install virtualenv")
 
@@ -364,7 +364,7 @@ def auto_update():
 		print_status("Auto updating is turned to on, installing normal package updates..")
 		print_status("If you want to turn this off, go to the PTF config directory and set AUTO_UPDATE to OFF")
 		if profile_os() == "DEBIAN":
-			subprocess.Popen("apt-get update && apt-get -y upgrade && apt-get dist-upgrade -y && apt-get autoremove -y && apt-get autoclean -y && updatedb >/dev/null 2>&1", shell=True, executable='/bin/bash').wait()
+			subprocess.Popen("sudo -u $USER update && sudo -u $USER -y upgrade && sudo -u $USER dist-upgrade -y && sudo -u $USER autoremove -y && sudo -u $USER autoclean -y && updatedb >/dev/null 2>&1", shell=True, executable='/bin/bash').wait()
 		print_status("Finished with normal package updates, moving on to the tools section..")
 	else:
 		print_status("Auto updating for packages is turned off, to enable go to the PTF config directory and set AUTO_UPDATE to ON.")

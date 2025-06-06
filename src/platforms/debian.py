@@ -26,8 +26,8 @@ def base_install_modules(module_name):
 	# depends
 	if counter == 1:
 		for module in modules:
-			command = ("apt-get -q -y install " + module)
+			command = ("sudo -u $USER -q -y install " + module)
 			subprocess.Popen("export DEBIAN_FRONTEND=noninteractive;%s" % command, shell=True, executable='/bin/bash').wait()
 	else:
-		command = ("apt-get -q -y install " + modules)
+		command = ("sudo -u $USER -q -y install " + modules)
 		subprocess.Popen("export DEBIAN_FRONTEND=noninteractive;%s" % command, shell=True, executable='/bin/bash').wait()
