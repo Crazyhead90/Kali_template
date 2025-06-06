@@ -1,48 +1,20 @@
-# Capgemini-PTF
-Red Stream PenTesters Framework (PTF) - Forked from https://github.com/trustedsec/ptf
 
-## Our way of working
-Since PTF is a framework we can work collaboratively on expanding it with all of the latest (cool) new tools. Please keep in mind we shall have some rules for adding new tools to the PTF. The rules are as followed:
-  1.  Don't immediately commit to the main branch, instead use your own.
-  2.  If you're missing a tool or have an issue with an existing tool in PTF please commit an issue. Let's work together on resolving the issues at hand.
-  3.  Adhere to the groups created for the tools:
-        ```
-        a. auxiliary                - Modules to configure the VM, for example terminal_logging. 
-        b. av-bypass                - Tools for bypassing Anti-Virus.
-        c. bluetooth                - Tools for bluetooth.
-        d. code-audit               - Tools for code reviews.
-        e. enumeration              - Enumeration tools, for example ldapdomaindump, bloodhound and dirb. 
-        f. exploitation             - Group consisting of exploit tools, for example impacket.
-        g. password-recovery        - Password recovery tools, for example hashcat and default-passwords.
-        h. phishing                 - Tools for performing phishing assignments.
-        i. post-exploitation        - Tools to use post-exploitation of a user/system/service.
-        j. powershell               - Powershell tools.
-        k. reversing                - Tools to perform reverse engineering.
-        l. rfid                     - RFID tools.
-        m. sdr                      - SDR tools.
-        n. vulnerability-analysis   - Tools to help hunt vulnerabilities.
-        o. webshells                - Shell scripts for web applications.
-        p. wireless                 - Tools to help during wireless pentests.
-        ```
+The PenTesters Framework (PTF)
+===
 
-Below follows the README.md from the original PTF github page.
+#### This is a forked project that has been improved greatly (Ubuntu)
+#### Original project by: David Kennedy (@HackingDave)
 
-## Description
+
 The PenTesters Framework (PTF) is a Python script designed for Debian/Ubuntu/ArchLinux based distributions to create a similar and familiar distribution for Penetration Testing. As pentesters, we've been accustom to the /pentest/ directories or our own toolsets that we want to keep up-to-date all of the time. We have those "go to" tools that we use on a regular basis, and using the latest and greatest is important.
 
 PTF attempts to install all of your penetration testing tools (latest and greatest), compile them, build them, and make it so that you can install/update your distribution on any machine. Everything is organized in a fashion that is cohesive to the Penetration Testing Execution Standard (PTES) and eliminates a lot of things that are hardly used. PTF simplifies installation and packaging and creates an entire pentest framework for you. Since this is a framework, you can configure and add as you see fit. We commonly see internally developed repos that you can use as well as part of this framework. It's all up to you.
 
-### Installation
-
-Run the following command below:
-
-```
-sudo ./ptf
-```
+The ultimate goal is for community support on this project. We want new tools added to the github repository. Submit your modules. It's super simple to configure and add them and only takes a few minute.
 
 ### Instructions:
 
-First check out the config/ptf.config file which contains the base location of where to install everything. By default this will install in the /pentest directory. Once you have that configured, move to running PTF by typing `sudo ./ptf`.
+First check out the config/ptf.config file which contains the base location of where to install everything. By default this will install in the /pentest directory. Once you have that configured, move to running PTF by typing `./ptf` (or python ptf).
 
 This will put you in a Metasploitesque type shell which has a similar look and feel for consistency. Show modules, use `<modules>`, etc. are all accepted commands. First things first, always type help or `?` to see a full list of commands.
 
@@ -52,21 +24,19 @@ For a video tutorial on how to use PTF, check out our Vimeo page here: https://v
 
 If you want to install and/or update everything, simply do the following:
 ```
-sudo ./ptf
-use manual_modules/install_update_all
-yes
+./ptf
 use modules/install_update_all
 yes
 ```
 
 This will install all of the tools inside of PTF. If they are already installed, this will iterate through and update everything for you automatically.
 
-You can also individually install each module, then use the use modules/update_installed which will only update what you've previously installed.
+You can also individually install each module, then use the  use modules/update_installed which will only update what you've previously installed.
 
 For example:
 
 ```
-sudo ./ptf
+./ptf
 use modules/update_installed
 ```
 
@@ -77,7 +47,7 @@ You can also show options to change information about the modules.
 If you only want to install only for example exploitation tools, you can run:
 
 ```
-sudo ./ptf
+./ptf
 use modules/exploitation/install_update_all
 ```
 
@@ -85,23 +55,17 @@ This will only install the exploitation modules. You can do this for any module 
 
 ### Customize your own installed tools
 
-You can install only the tools you want to by going to the modules/custom_list/list.txt section. Modify the list.txt file and add the tools you only want to install or update.
-
-Example list.txt file:
-
-modules/exploitation/metasploit
-modules/post-exploitation/unicorn
+You can install only the tools you want to by going to the modules/custom_list/list.py section. Modify the list.py file and add the tools you only want to install or update.
 
 Then when in PTF:
 
 ```
-sudo ./ptf
+./ptf
 use modules/custom_list/list
 yes
 ```
 
-This allows you to carry your module configuration over and only install the tools that you want and keep them updated.
-
+This allows you to carry your module configuration over and only install the tools that you want and keep them updated. Note: for this you need to create the custom_list dir and file
 
 ### Modules:
 
@@ -110,47 +74,34 @@ First, head over to the modules/ directory, inside of there are sub directories 
 Below is a sample module
 
 ```
-# AUTHOR OF MODULE NAME
 AUTHOR="David Kennedy (ReL1K)"
 
-# DESCRIPTION OF THE MODULE
-DESCRIPTION="This module will install/update beef - Browser Exploitation Framework (BeEF)"
+DESCRIPTION="This module will install/update the Browser Exploitation Framework (BeEF)"
 
-# INSTALL TYPE GIT, SVN, FILE DOWNLOAD
-# OPTIONS = GIT, SVN, FILE
 INSTALL_TYPE="GIT"
 
-# LOCATION OF THE FILE OR GIT/SVN REPOSITORY
 REPOSITORY_LOCATION="https://github.com/beefproject/beef"
 
-# EXTENSION OF THE RELEASE FILE (WITHOUT ".")
-RELEASE_EXTENSION=""
+X64_LOCATION="https://github.com/something_thats_x64_instead_of_x86
 
-# FILTER TO GRAB THE CORRECT RELEASE FILE
-RELEASE_FILTER=""
-
-# WHERE DO YOU WANT TO INSTALL IT
 INSTALL_LOCATION="beef"
 
-# DEPENDS FOR DEBIAN INSTALLS
-DEBIAN="git ruby sqlite3 nodejs"
+DEBIAN="ruby1.9.3,sqlite3,ruby-sqlite3"
 
-# DEPENDS FOR FEDORA INSTALLS
-FEDORA="git"
+ARCHLINUX = "arch-module,etc"
 
-# COMMANDS TO RUN AFTER
-AFTER_COMMANDS="cd {INSTALL_LOCATION},./install --silent,mv beef beef_launcher,echo 'c/d {INSTALL_LOCATION} && ./beef_launcher $@' > beef.sh,sed -i 's|c/d|cd|g' beef.sh,chmod +x beef.sh"
+BYPASS_UPDATE="NO"
 
-# THIS WILL CREATE AN AUTOMATIC LAUNCHER FOR THE TOOL
+AFTER_COMMANDS="cd {INSTALL_LOCATION},ruby install-beef"
+
 LAUNCHER="beef"
 
-# RUN AFTER_COMMAND AFTER UPDATING
-BYPASS_UPDATE="YES"
+TOOL_DEPEND="modules/exploitation/metasploit"
 ```
 
 ### Module Development:
 
-All of the fields are pretty easy, on the repository locations, you can use GIT, SVN or FILE. Fill in the depends, and where you want the install location to be. PTF will take where the python file is located (for example exploitation) and move it to what you specify in the PTF config (located under config). By default it installs all your tools to `/pentest/PTES_PHASE/TOOL_FOLDER`
+All of the fields are pretty easy, on the repository locations, you can use GIT, GITRELEASE, SVN or FILE. Fill in the depends, and where you want the install location to be. PTF will take where the python file is located (for example exploitation) and move it to what you specify in the PTF config (located under config). By default it installs all your tools to `/pentest/PTES_PHASE/TOOL_FOLDER`
 
 Note in modules, you can specify after commands `{INSTALL_LOCATION}`. This will append where you want the install location to go when using after commands.
 
@@ -159,6 +110,12 @@ You can also specify `{PTF_LOCATION}` which will pull the base path for your PTF
 You also have the ability for repository locations to specify both a 32 bit and 64 bit location. Repository location should always be the x86 download path. To add a 64 bit path for a tool, specify X64_LOCATION and give it a URL. When PTF launches it will automatically detect the architecture and attempt to use the x64 link instead of the x86.
 
 Note that ArchLinux packages are also supported, it needs to be specified for both DEBIAN and ARCH in order for it to be properly installed on either platform in the module
+
+### Support for Github releases
+Extension of the release file (WITHOUT ".")
+`RELEASE_EXTENSION="zip"`
+Filter to grab the correct release file
+`RELEASE_FILTER="trunk"`
 
 ### GITLAB Support
 
@@ -191,7 +148,7 @@ You can also just run `./ptf --update-all` and it will automatically update ever
 If you're running `ptf` in an automatic build, you can use a [heredoc](http://tldp.org/LDP/abs/html/here-docs.html) so you don't have to interactively type the modules you wish to install. Example:
 
 ```
-sudo ./ptf <<EOF
+./ptf <<EOF
 use modules/exploitation/metasploit
 run
 use modules/password-recovery/johntheripper
@@ -220,22 +177,3 @@ The `IGNORE_UPDATE_ALL_MODULES=` config option can be found under config/ptf.con
 The `INCLUDE_ONLY_THESE_MODULES` in the config option under config/ptf.config will only install and include specific modules that are specified here. This is good for baselining the tools that you want and install only them.
 
 
-### LAUNCH PTF WITH NO BANNER
-
-You can launch PTF with no banner message if you want. Simply specify:
-
-```
-sudo ./ptf --no-banner
-
-or 
-
-sudo ./ptf -nb
-```
-
-### CHECK FOR INSTALLED PROGRAMS THROUGH PTF
-
-You can check to see what applications you've already installed through PTF by typing the following:
-
-```
-ptf>show installed
-```
