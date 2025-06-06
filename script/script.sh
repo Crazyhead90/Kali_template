@@ -2,9 +2,9 @@
 
 apt install -y python3 python3-pip python3-venv seclists
 
-mkdir -p $HOME/httpserver/shells
 mkdir -p $HOME/httpserver/enum
 mkdir -p $HOME/httpserver/privesc
+mkdir -p $HOME/httpserver/shells
 mkdir -p $HOME/ligolo-ng/
 
 cp /usr/share/peass/winpeas/winPEASx64.exe $HOME/httpserver/enum/
@@ -16,7 +16,6 @@ cp /usr/share/windows-resources/mimikatz/x64/mimikatz.exe $HOME/httpserver/prive
 
 cp /usr/share/windows-resources/binaries/nc.exe $HOME/httpserver/shells/
 cp /usr/share/webshells/ $HOME/httpserver/shells/
-
 
 # Install and configure Oh My Zsh
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"

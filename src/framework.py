@@ -39,7 +39,7 @@ print_status("Operating system detected as: " + bcolors.BOLD + os_profile + bcol
 
 # main intro here
 if profile_os() == "DEBIAN":
-	subprocess.Popen("sudo dpkg --add-architecture i386", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, executable='/bin/bash').wait()
+	subprocess.Popen("dpkg --add-architecture i386", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, executable='/bin/bash').wait()
 
 print_status("Welcome to PTF")
 

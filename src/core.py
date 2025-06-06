@@ -197,17 +197,16 @@ def prep_install():
 	if not os.path.isfile(os.getenv("HOME") + "/.ptf"):
 		print_status("This appears to be your first time using PTF.")
 		print_status("Updating & Upgrading packages.")
-		os.system("sudo apt-get update -y && sudo apt-get upgrade -y")
+		os.system("apt-get update -y &&  apt-get upgrade -y")
 		print_status("Installing required python2 & 3 packages")
-		os.system("sudo apt-get install curl vim python2 python3 python3-pip python3-venv -y")
-		os.system("sudo curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && sudo python2 get-pip.py && "
-				  "sudo rm get-pip.py && pip3 install virtualenv && pip2 install virtualenv")
+		os.system("apt-get install curl vim python2 python3 python3-pip python3-venv -y")
+		os.system("curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && python2 get-pip.py && "
+				  "rm get-pip.py && pip3 install virtualenv && pip2 install virtualenv")
 
-		os.system('ln -s /root /home/root')
-		for i in os.listdir('/home'):
-			os.system(
-				f"echo 'alias python=/usr/bin/python3' >> /home/{i}/.bashrc && "
-				f"echo 'alias pip=/usr/bin/pip3' >> /home/{i}/.bashrc")
+		os.system('ln -s $HOME')
+		os.system(
+			f"echo 'alias python=/usr/bin/python3' >> $HOME/.bashrc && "
+			f"echo 'alias pip=/usr/bin/pip3' >> $HOME/.bashrc")
 
 		print_status("Creating output directory to: " + os.getenv("HOME") + "/.ptf")
 		os.makedirs(os.getenv("HOME") + "/.ptf")
@@ -365,7 +364,7 @@ def auto_update():
 		print_status("Auto updating is turned to on, installing normal package updates..")
 		print_status("If you want to turn this off, go to the PTF config directory and set AUTO_UPDATE to OFF")
 		if profile_os() == "DEBIAN":
-			subprocess.Popen("sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y && apt-get autoclean -y && updatedb >/dev/null 2>&1", shell=True, executable='/bin/bash').wait()
+			subprocess.Popen("apt-get update && apt-get -y upgrade && apt-get dist-upgrade -y && apt-get autoremove -y && apt-get autoclean -y && updatedb >/dev/null 2>&1", shell=True, executable='/bin/bash').wait()
 		print_status("Finished with normal package updates, moving on to the tools section..")
 	else:
 		print_status("Auto updating for packages is turned off, to enable go to the PTF config directory and set AUTO_UPDATE to ON.")

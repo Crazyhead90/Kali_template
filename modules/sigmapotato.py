@@ -32,7 +32,7 @@ DEBIAN=""
 FEDORA=""
 
 # COMMANDS TO RUN AFTER
-AFTER_COMMANDS="cd {INSTALL_LOCATION},cp * $HOME/httpserver/privesc/"
+AFTER_COMMANDS="cd {INSTALL_LOCATION},mkdir -p $HOME/httpserver/privesc/,cp * $HOME/httpserver/privesc/"
 
 # THIS WILL CREATE AN AUTOMATIC LAUNCHER FOR THE TOOL
 LAUNCHER=""

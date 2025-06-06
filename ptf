@@ -39,8 +39,9 @@ if not os.path.isdir("/usr/local/bin/"):
 
 if os.geteuid() != 0:
 	print("\nPentest Tool Framework (PTF)")
-	print("\nThis needs to be run as root. Exiting..")
-	exit()
+	sudo_check = input("\nDid you run this with sudo? Y/N")
+	if sudo_check.lower() != "y":
+		exit()
 
 try:
 	os.system("clear")
@@ -57,12 +58,13 @@ try:
 		#print("[*] Trying to update myself first.. Then starting framework.")
 		#subprocess.Popen("git pull", shell=True, executable='/bin/bash').wait()
 
+	print(os.getenv("HOME"))
 	if not os.path.isdir(os.getenv("HOME") + "/.ptf"):
 		# run initial setup
 		import src.core
 		src.core.prep_install()
 	else:
-		os.system("sudo apt-get update -y")
+		os.system("apt-get update -y")
 	os.system("clear")
 	if not os.path.isfile("/usr/local/bin/ptf"):
 		# create automatic launcher

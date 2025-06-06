@@ -32,7 +32,7 @@ DEBIAN="curl unzip"
 FEDORA=""
 
 # COMMANDS TO RUN AFTER
-AFTER_COMMANDS="cd {INSTALL_LOCATION},unzip -j -o *.zip, mkdir $HOME/httpserver/, mv ./* $HOME/httpserver/"
+AFTER_COMMANDS="cd {INSTALL_LOCATION},unzip -j -o *.zip, mkdir -p $HOME/httpserver/sysinternals, mv ./* $HOME/httpserver/sysinternals"
 
 # THIS WILL CREATE AN AUTOMATIC LAUNCHER FOR THE TOOL
 LAUNCHER=""
