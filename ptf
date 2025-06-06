@@ -64,7 +64,7 @@ try:
 		import src.core
 		src.core.prep_install()
 	else:
-		os.system("sudo -u $USER apt-get update -y")
+		os.system("sudo apt-get update -y")
 	os.system("clear")
 	if not os.path.isfile("/usr/local/bin/ptf"):
 		# create automatic launcher

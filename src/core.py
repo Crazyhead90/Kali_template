@@ -164,7 +164,7 @@ def exit_ptf():
 # if it can't find it, will default to manual install base
 def profile_os():
 	# if we are running a debian variant
-	if os.path.isfile("/usr/bin/sudo -u $USER"):
+	if os.path.isfile("/usr/bin/apt-get"):
 		return "DEBIAN"
 	if os.path.isfile("/usr/bin/aptitude"):
 		return "DEBIAN"
