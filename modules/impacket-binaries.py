@@ -32,7 +32,7 @@ DEBIAN=""
 FEDORA=""
 
 # COMMANDS TO RUN AFTER
-AFTER_COMMANDS="cd {INSTALL_LOCATION},mkdir -p ~/httpserver/impacket-binaries/,cp * ~/httpserver/impacket-binaries/"
+AFTER_COMMANDS="cd {INSTALL_LOCATION},mkdir -p $HOME/httpserver/impacket-binaries/,cp * $HOME/httpserver/impacket-binaries/"
 
 # THIS WILL CREATE AN AUTOMATIC LAUNCHER FOR THE TOOL
 LAUNCHER=""

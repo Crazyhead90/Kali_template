@@ -200,9 +200,8 @@ def prep_install():
 		os.system("sudo apt-get update -y && sudo apt-get upgrade -y")
 		print_status("Installing required python2 & 3 packages")
 		os.system("sudo apt-get install curl vim python2 python3 python3-pip python3-venv -y")
-		os.system(
-			"sudo curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && sudo python2 get-pip.py && "
-			"sudo rm get-pip.py && sudo apt-get install python3.10-venv -y && pip2 install virtualenv")
+		os.system("sudo curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && sudo python2 get-pip.py && "
+				  "sudo rm get-pip.py && pip3 install virtualenv && pip2 install virtualenv")
 
 		os.system('ln -s /root /home/root')
 		for i in os.listdir('/home'):
